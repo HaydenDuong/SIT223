@@ -58,7 +58,7 @@ pipeline {
                 emailext(
                     to: 'developer@example.com',
                     subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                    body: "Good news! The build was successful. Check console output at ${env.BUILD_URL} to view the results.",
+                    body: """Good news! The build was successful. Check console output at ${env.BUILD_URL} to view the results.""",
                     attachLog: true,
                     attachmentsPattern: logFile
                 )
@@ -71,7 +71,7 @@ pipeline {
                 emailext(
                     to: 'developer@example.com',
                     subject: "Build Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                    body: "Unfortunately, the build failed. Check console output at ${env.BUILD_URL} to view the results.",
+                    body: """Unfortunately, the build failed. Check console output at ${env.BUILD_URL} to view the results.""",
                     attachLog: true,
                     attachmentsPattern: logFile
                 )
