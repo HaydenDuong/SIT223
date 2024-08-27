@@ -48,6 +48,9 @@ pipeline {
     }
 
     post {
+        always {
+            echo 'Pipeline has finished.'
+        }
         success {
             emailext(
                 to: 'tamlac20121996@gmail.com',
