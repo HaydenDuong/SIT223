@@ -50,7 +50,6 @@ pipeline {
     post {
         success {
             emailext(
-                from: 'tamlac20121996@gmail.com',
                 to: 'tamlac20121996@gmail.com',
                 subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
                 body: "This is a simple test message."
@@ -58,7 +57,6 @@ pipeline {
         }
         failure {
             emailext(
-                from: 'tamlac20121996@gmail.com',
                 to: 'tamlac20121996@gmail.com',
                 subject: "Build Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
                 body: "This is a simple test message."
