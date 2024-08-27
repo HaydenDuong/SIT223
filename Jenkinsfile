@@ -52,7 +52,7 @@ pipeline {
             echo 'Pipeline has finished.'
         }
         success {
-            mail to: 'tamlac20121996@gmail.com.com',
+            mail to: 'tamlac20121996@gmail.com',
                  subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
                  body: "Good news! The build was successful.\n\nCheck console output at ${env.BUILD_URL} to view the results."
         }
