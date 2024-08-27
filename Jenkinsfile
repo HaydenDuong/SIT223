@@ -56,7 +56,7 @@ pipeline {
                 def logFile = "${env.BUILD_ID}.log"
                 writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
                 emailext(
-                    to: 'developer@example.com',
+                    to: 'tamlac2012@yahoo.com.vn',
                     subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
                     body: """Good news! The build was successful. Check console output at ${env.BUILD_URL} to view the results.""",
                     attachLog: true,
@@ -69,7 +69,7 @@ pipeline {
                 def logFile = "${env.BUILD_ID}.log"
                 writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
                 emailext(
-                    to: 'developer@example.com',
+                    to: 'tamlac2012@yahoo.com.vn',
                     subject: "Build Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
                     body: """Unfortunately, the build failed. Check console output at ${env.BUILD_URL} to view the results.""",
                     attachLog: true,
