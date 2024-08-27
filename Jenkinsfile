@@ -48,18 +48,39 @@ pipeline {
     }
 
     post {
+
         always {
             echo 'Pipeline has finished.'
         }
+        
         success {
-            mail to: 'tamlac20121996@gmail.com',
-                 subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                 body: "Good news! The build was successful.\n\nCheck console output at ${env.BUILD_URL} to view the results."
+            script {
+                def logFile = "${env.BUILD_ID}.log"
+                writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                emailext(
+                    to: 'tamlac20121996@gmail.com',
+                    subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                    body: """<p>Good news! The build was successful.</p>
+                             <p>Check console output at ${env.BUILD_URL} to view the results.</p>""",
+                    attachLog: true,
+                    attachmentsPattern: logFile
+                )
+            }
         }
+
         failure {
-            mail to: 'tamlac20121996@gmail.com',
-                 subject: "Build Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                 body: "Unfortunately, the build failed.\n\nCheck console output at ${env.BUILD_URL} to view the results."
+            script {
+                def logFile = "${env.BUILD_ID}.log"
+                writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                emailext(
+                    to: 'tamlac20121996@gmail.com',
+                    subject: "Build Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                    body: """<p>Unfortunately, the build failed.</p>
+                             <p>Check console output at ${env.BUILD_URL} to view the results.</p>""",
+                    attachLog: true,
+                    attachmentsPattern: logFile
+                )
+            }
         }
     }
 }
