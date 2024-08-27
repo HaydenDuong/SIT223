@@ -48,24 +48,18 @@ pipeline {
     }
 
     post {
-        always {
-            echo 'Pipeline has finished.'
-        }
-        
         success {
             emailext(
                 to: 'tamlac20121996@gmail.com',
                 subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                body: """<p>Good news! The build was successful.</p>
-                         <p>Check console output at ${env.BUILD_URL} to view the results.</p>"""
+                body: "This is a simple test message."
             )
         }
         failure {
             emailext(
                 to: 'tamlac20121996@gmail.com',
                 subject: "Build Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                body: """<p>Unfortunately, the build failed.</p>
-                         <p>Check console output at ${env.BUILD_URL} to view the results.</p>"""
+                body: "This is a simple test message."
             )
         }
     }
