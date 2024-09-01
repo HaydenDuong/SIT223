@@ -12,7 +12,35 @@ pipeline {
             steps {
                 echo 'Run unit tests and integration tests.'
                 echo 'Tool: JUnit for unit tests.'
-                echo 'Tool: Selenium foor integration tests.'
+                echo 'Tool: Selenium for integration tests.'
+            }
+            post {
+                success {
+                    script {
+                        def logFile = "${env.BUILD_ID}_unit_integration.log"
+                        writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                        emailext(
+                            to: 'tamlac2012@yahoo.com.vn',
+                            subject: "Unit and Integration Tests Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: """The Unit and Integration Tests stage was successful. Check console output at ${env.BUILD_URL} to view the results.""",
+                            attachLog: true,
+                            attachmentsPattern: logFile
+                        )
+                    }
+                }
+                failure {
+                    script {
+                        def logFile = "${env.BUILD_ID}_unit_integration.log"
+                        writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                        emailext(
+                            to: 'tamlac2012@yahoo.com.vn',
+                            subject: "Unit and Integration Tests Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: """The Unit and Integration Tests stage failed. Check console output at ${env.BUILD_URL} to view the results.""",
+                            attachLog: true,
+                            attachmentsPattern: logFile
+                        )
+                    }
+                }
             }
         }
         stage('Code Analysis') {
@@ -26,6 +54,34 @@ pipeline {
                 echo 'Perform a security scan to identify vulnerabilities.'
                 echo 'Tool: OWASP ZAP'
             }
+            post {
+                success {
+                    script {
+                        def logFile = "${env.BUILD_ID}_security_scan.log"
+                        writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                        emailext(
+                            to: 'tamlac2012@yahoo.com.vn',
+                            subject: "Security Scan Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: """The Security Scan stage was successful. Check console output at ${env.BUILD_URL} to view the results.""",
+                            attachLog: true,
+                            attachmentsPattern: logFile
+                        )
+                    }
+                }
+                failure {
+                    script {
+                        def logFile = "${env.BUILD_ID}_security_scan.log"
+                        writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                        emailext(
+                            to: 'tamlac2012@yahoo.com.vn',
+                            subject: "Security Scan Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: """The Security Scan stage failed. Check console output at ${env.BUILD_URL} to view the results.""",
+                            attachLog: true,
+                            attachmentsPattern: logFile
+                        )
+                    }
+                }
+            }
         }
         stage('Deploy to Staging') {
             steps {
@@ -37,6 +93,34 @@ pipeline {
             steps {
                 echo 'Run integration tests on the staging environment.'
                 echo 'Tool: Selenium'
+            }
+            post {
+                success {
+                    script {
+                        def logFile = "${env.BUILD_ID}_staging_integration.log"
+                        writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                        emailext(
+                            to: 'tamlac2012@yahoo.com.vn',
+                            subject: "Integration Tests on Staging Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: """The Integration Tests on Staging stage was successful. Check console output at ${env.BUILD_URL} to view the results.""",
+                            attachLog: true,
+                            attachmentsPattern: logFile
+                        )
+                    }
+                }
+                failure {
+                    script {
+                        def logFile = "${env.BUILD_ID}_staging_integration.log"
+                        writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
+                        emailext(
+                            to: 'tamlac2012@yahoo.com.vn',
+                            subject: "Integration Tests on Staging Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                            body: """The Integration Tests on Staging stage failed. Check console output at ${env.BUILD_URL} to view the results.""",
+                            attachLog: true,
+                            attachmentsPattern: logFile
+                        )
+                    }
+                }
             }
         }
         stage('Deploy to Production') {
@@ -50,32 +134,6 @@ pipeline {
     post {
         always {
             echo 'Pipeline has finished.'
-        }
-        success {
-            script {
-                def logFile = "${env.BUILD_ID}.log"
-                writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
-                emailext(
-                    to: 'tamlac2012@yahoo.com.vn',
-                    subject: "Build Successful: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                    body: """Good news! The build was successful. Check console output at ${env.BUILD_URL} to view the results.""",
-                    attachLog: true,
-                    attachmentsPattern: logFile
-                )
-            }
-        }
-        failure {
-            script {
-                def logFile = "${env.BUILD_ID}.log"
-                writeFile file: logFile, text: currentBuild.rawBuild.getLog().join("\n")
-                emailext(
-                    to: 'tamlac2012@yahoo.com.vn',
-                    subject: "Build Failed: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                    body: """Unfortunately, the build failed. Check console output at ${env.BUILD_URL} to view the results.""",
-                    attachLog: true,
-                    attachmentsPattern: logFile
-                )
-            }
         }
     }
 }
